@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>角角大比拼｜5-2 比較角的大小</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@500;900&display=swap">
+<style>
+:root{--bg:#fff8e6;--card:#fffdf5;--ink:#25324b;--sub:#5b6785;--yel:#f2b01e;--blu:#3d8fd6;--ok:#2e9d5b;--no:#e0484f;--line:#e9dcb8;color-scheme:light;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1b2236;--card:#252e47;--ink:#f3efe2;--sub:#aab3cc;--line:#3b4668;--yel:#f6c04a;--blu:#6db1f0;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#1b2236;--card:#252e47;--ink:#f3efe2;--sub:#aab3cc;--line:#3b4668;--yel:#f6c04a;--blu:#6db1f0;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;font-size:18px;line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:20px 16px 8px}
+h1{font-size:clamp(34px,8vw,56px);font-weight:900;margin:0;letter-spacing:.06em;line-height:1.15}
+.sub{color:var(--sub);margin:6px 0 0}
+.panel{background:var(--card);border:3px solid var(--line);border-radius:22px;padding:20px;margin-top:16px}
+.hero{text-align:center}
+.hero svg{width:min(320px,80%);height:auto}
+.p1,.p2{transform-origin:100px 130px}
+.p2{animation:open 3.2s ease-in-out infinite alternate}
+@keyframes open{from{transform:rotate(0)}to{transform:rotate(-70deg)}}
+@media (prefers-reduced-motion:reduce){.p2{animation:none;transform:rotate(-45deg)}}
+button{font:inherit;color:inherit;cursor:pointer}
+.big{background:var(--yel);color:#25324b;border:0;border-radius:16px;padding:12px 32px;font-weight:900;font-size:22px;box-shadow:0 5px 0 #b9820a}
+.big:active{transform:translateY(3px);box-shadow:0 2px 0 #b9820a}
+:focus-visible{outline:4px solid var(--blu);outline-offset:3px}
+.bar{display:flex;justify-content:space-between;align-items:center;font-weight:900;gap:12px}
+.track{flex:1;height:14px;background:var(--line);border-radius:9px;overflow:hidden}
+.track i{display:block;height:100%;background:var(--blu);width:0;transition:width .3s}
+.q{font-size:clamp(21px,4.6vw,28px);font-weight:900;margin:14px 0}
+.cards{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+.card{background:var(--card);border:4px solid var(--line);border-radius:18px;padding:8px;text-align:center}
+.card svg{width:100%;height:auto;display:block}
+.card b{display:block;font-size:22px}
+.card:hover:not(:disabled){border-color:var(--blu)}
+.card.right{border-color:var(--ok);background:rgba(46,157,91,.15)}
+.card.wrong{border-color:var(--no);background:rgba(224,72,79,.13)}
+.opts{display:flex;gap:12px;flex-wrap:wrap}
+.opts .card{flex:1;min-width:110px;font-size:34px;font-weight:900;padding:18px 8px}
+.fb{min-height:3.2em;margin:14px 0 6px;font-weight:500}
+.fb.ok{color:var(--ok)}.fb.no{color:var(--no)}
+.stars{font-size:44px;letter-spacing:6px}
+.note{display:flex;gap:16px;align-items:center;margin:18px 0}
+footer{max-width:760px;margin:0 auto;padding:0 16px 28px}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<main>
+<h1>角角大比拼</h1>
+<p class="sub">5-2 比較角的大小｜兩邊張開得越大，角就越大</p>
+
+<section id="start" class="panel hero">
+<svg viewBox="0 0 220 150" aria-label="兩支鉛筆張開成一個角">
+<path d="M20 130H200" stroke="var(--line)" stroke-width="3" stroke-linecap="round"/>
+<g class="p1"><line x1="100" y1="130" x2="192" y2="130" stroke="#3d8fd6" stroke-width="12" stroke-linecap="round"/><circle cx="192" cy="130" r="4" fill="#25324b"/></g>
+<g class="p2"><line x1="100" y1="130" x2="192" y2="130" stroke="#f2b01e" stroke-width="12" stroke-linecap="round"/><circle cx="192" cy="130" r="4" fill="#25324b"/></g>
+</svg>
+<p>10 題挑戰：看一看，哪一個角比較大？哪一個比較小？</p>
+<button class="big" id="go">開始挑戰</button>
+</section>
+
+<section id="game" class="panel" hidden>
+<div class="bar"><span id="no">第 1 題</span><div class="track"><i id="fill"></i></div><span id="sc">0 分</span></div>
+<div class="q" id="q"></div>
+<div id="area"></div>
+<div class="fb" id="fb" aria-live="polite"></div>
+<button class="big" id="next" hidden>下一題</button>
+</section>
+
+<section id="end" class="panel hero" hidden>
+<div class="stars" id="stars"></div>
+<h2 id="res" style="margin:6px 0"></h2>
+<p id="msg"></p>
+<button class="big" id="again">再玩一次</button>
+</section>
+</main>
+
+<script>
+const R=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
+const shuf=a=>a.map(v=>[Math.random(),v]).sort((x,y)=>x[0]-y[0]).map(x=>x[1]);
+const $=id=>document.getElementById(id);
+const rad=t=>t*Math.PI/180;
+
+function angleSVG(deg,rot,label){
+  const vx=100,vy=130,L=92,r=26;
+  const pt=(t,d)=>[vx+d*Math.cos(rad(t)),vy-d*Math.sin(rad(t))];
+  const [x1,y1]=pt(rot,L),[x2,y2]=pt(rot+deg,L);
+  const [ax,ay]=pt(rot,r),[bx,by]=pt(rot+deg,r),[lx,ly]=pt(rot+deg/2,r+22);
+  return `<svg viewBox="0 0 220 150" role="img" aria-label="角${label}">
+  <line x1="${vx}" y1="${vy}" x2="${x1}" y2="${y1}" stroke="#3d8fd6" stroke-width="10" stroke-linecap="round"/>
+  <line x1="${vx}" y1="${vy}" x2="${x2}" y2="${y2}" stroke="#f2b01e" stroke-width="10" stroke-linecap="round"/>
+  <circle cx="${x1}" cy="${y1}" r="3.5" fill="#25324b"/><circle cx="${x2}" cy="${y2}" r="3.5" fill="#25324b"/>
+  <path d="M${ax} ${ay}A${r} ${r} 0 0 0 ${bx} ${by}" fill="none" stroke="#e0484f" stroke-width="3.5"/>
+  <text x="${lx}" y="${ly+6}" text-anchor="middle" font-size="19" font-weight="900" fill="var(--ink)">${label}</text></svg>`;
+}
+
+// pick n angle sizes that differ by at least 18 degrees
+function degs(n){
+  for(;;){
+    const d=Array.from({length:n},()=>R(22,115));
+    const s=[...d].sort((a,b)=>a-b);
+    if(s.every((v,i)=>i==0||v-s[i-1]>=18))return d;
+  }
+}
+function makeQ(type,big){
+  if(type==='sym'){
+    const z=shuf(['ㄅ','ㄆ','ㄇ','ㄉ','ㄊ'])[0];
+    return{type,z,ans:'∠'+z,opts:shuf(['∠'+z,z+'∠','△'+z]),txt:`角${z} 可以記作什麼？`};
+  }
+  const n=type==='two'?2:3,d=degs(n);
+  const target=big?Math.max(...d):Math.min(...d);
+  return{type,d,rot:d.map(()=>R(0,22)),ans:d.indexOf(target),
+    txt:n==2?`哪一個角比較${big?'大':'小'}？點一點它。`:`哪一個角最${big?'大':'小'}？點一點它。`,big};
+}
+let Q=[],i=0,score=0,locked=false;
+
+function build(){
+  Q=[makeQ('two',true),makeQ('two',false),makeQ('two',true),makeQ('two',false),
+     makeQ('three',true),makeQ('three',false),makeQ('three',true),makeQ('three',false),
+     makeQ('sym'),makeQ('sym')];
+  i=0;score=0;
+}
+function show(id){['start','game','end'].forEach(s=>$(s).hidden=s!==id)}
+function render(){
+  const q=Q[i];locked=false;
+  $('no').textContent=`第 ${i+1} 題`;$('sc').textContent=`${score} 分`;
+  $('fill').style.width=(i/Q.length*100)+'%';
+  $('q').textContent=q.txt;$('fb').textContent='';$('fb').className='fb';$('next').hidden=true;
+  const a=$('area');
+  if(q.type==='sym'){
+    a.className='opts';
+    a.innerHTML=q.opts.map(o=>`<button class="card" data-v="${o}">${o}</button>`).join('');
+    a.querySelectorAll('button').forEach(b=>b.onclick=()=>pick(b,b.dataset.v===q.ans));
+  }else{
+    a.className='cards';
+    a.innerHTML=q.d.map((d,k)=>`<button class="card" data-k="${k}">${angleSVG(d,q.rot[k],k+1)}<b>角${k+1}</b></button>`).join('');
+    a.querySelectorAll('button').forEach(b=>b.onclick=()=>pick(b,+b.dataset.k===q.ans));
+  }
+}
+function pick(btn,ok){
+  if(locked)return;locked=true;
+  const q=Q[i],bs=[...$('area').children];
+  btn.classList.add(ok?'right':'wrong');
+  if(!ok){
+    const c=bs.find(b=>q.type==='sym'?b.dataset.v===q.ans:+b.dataset.k===q.ans);
+    c&&c.classList.add('right');
+  }
+  bs.forEach(b=>b.disabled=true);
+  if(ok)score+=10;
+  $('sc').textContent=`${score} 分`;
+  const fb=$('fb');fb.classList.add(ok?'ok':'no');
+  if(q.type==='sym')fb.textContent=ok?`答對了！我們用「∠」的符號來表示角，角${q.z}記作∠${q.z}。`:`再想想：「∠」要寫在前面，角${q.z}記作∠${q.z}。`;
+  else fb.textContent=ok?'答對了！兩邊張開得比較大的角，就是比較大的角。':`再看看：兩邊張開得${q.big?'最大':'最小'}的是角${q.ans+1}。`;
+  $('next').textContent=i===Q.length-1?'看結果':'下一題';$('next').hidden=false;$('next').focus();
+}
+function finish(){
+  show('end');
+  const s=score/10,st=s>=9?3:s>=6?2:1;
+  $('stars').textContent='★'.repeat(st)+'☆'.repeat(3-st);
+  $('res').textContent=`答對 ${s} 題，得 ${score} 分`;
+  $('msg').textContent=st===3?'太厲害了，你是比角大小小達人！':st===2?'很不錯！再玩一次，拿下三顆星吧。':'再試一次，記得比較兩邊張開的大小喔。';
+}
+$('go').onclick=()=>{build();show('game');render()};
+$('again').onclick=()=>{build();show('game');render()};
+$('next').onclick=()=>{i++;i>=Q.length?finish():render()};
+
+</script>
+</body>
+</html>
